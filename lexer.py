@@ -38,6 +38,7 @@ t_ignore = ' \t\n'
 # Manejo de errores del lexer
 def t_error(t):
     print("Error léxico: ", t.value)
+    mostrar_error_lexico(t.value)
     t.lexer.skip(1)
 
 # Crear el lexer
