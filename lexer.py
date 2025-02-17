@@ -29,7 +29,7 @@ t_IGUAL = r'='
 
 # Palabras clave con reglas especiales
 def t_PALABRA_CLAVE(t):
-    r'c<rea|genera|realiza|has'
+    r'crea|genera|realiza|has'
     return t
 
 # Ignorar espacios y saltos de línea
