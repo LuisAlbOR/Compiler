@@ -1,4 +1,4 @@
 pip3 install ply graphviz
 pip3 install ply
 pip3 install pyperclip
-
+pip install ply pygame
