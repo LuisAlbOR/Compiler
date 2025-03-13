@@ -24,13 +24,24 @@ def manejar_errores(entrada, screen, font):
             errores.append("Error: La frase inicial debe ser 'crea/genera/realiza la siguiente matriz'.")
             posiciones.append(0)
 
-        # 🔹 2. Verificar paréntesis
-        if entrada.count('(') > entrada.count(')'):
-            errores.append("Error: Falta ')' en la ecuación.")
-            posiciones.append(entrada.rfind('('))  # Último '(' sin cerrar
-        elif entrada.count(')') > entrada.count('('):
-            errores.append("Error: Falta '(' en la ecuación.")
-            posiciones.append(entrada.find(')'))  # Primer ')' sin abrir
+        # 🔹 2. Extraer ecuaciones dentro de paréntesis
+        ecuaciones = re.findall(r'\(([^)]+)\)', entrada)
+
+        # 🔹 3. Identificar en qué ecuación falta '(' o ')'
+        abrir_par = [m.start() for m in re.finditer(r'\(', entrada)]  # Lista de posiciones de '('
+        cerrar_par = [m.start() for m in re.finditer(r'\)', entrada)]  # Lista de posiciones de ')'
+
+        if len(abrir_par) != len(cerrar_par):  # Si hay más '(' que ')', falta un ')'
+            for i, pos in enumerate(abrir_par):
+                if i >= len(cerrar_par):  # Si hay un '(' sin su correspondiente ')'
+                    errores.append(f"Error: Falta ')' en la ecuación {i+1}.")
+                    posiciones.append(pos)
+
+        if len(cerrar_par) != len(abrir_par):  # Si hay más ')' que '(', falta un '('
+            for i, pos in enumerate(cerrar_par):
+                if i >= len(abrir_par):  # Si hay un ')' sin su correspondiente '('
+                    errores.append(f"Error: Falta '(' en la ecuación {i+1}.")
+                    posiciones.append(pos)
 
         # 🔹 3. Extraer ecuaciones dentro de paréntesis
         ecuaciones = re.findall(r'\(([^)]+)\)', entrada)
